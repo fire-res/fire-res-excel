@@ -1,16 +1,19 @@
 package io.github.fireres.excel;
 
-import io.github.fireres.core.properties.GenerationProperties;
 import io.github.fireres.core.model.Sample;
 import io.github.fireres.excel.config.TestConfig;
+import io.github.fireres.excess.pressure.properties.ExcessPressureProperties;
 import io.github.fireres.excess.pressure.service.ExcessPressureService;
+import io.github.fireres.firemode.properties.FireModeProperties;
 import io.github.fireres.firemode.service.FireModeService;
+import io.github.fireres.heatflow.properties.HeatFlowProperties;
 import io.github.fireres.heatflow.service.HeatFlowService;
+import io.github.fireres.unheated.surface.properties.UnheatedSurfaceProperties;
 import io.github.fireres.unheated.surface.service.UnheatedSurfaceService;
-import lombok.val;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
@@ -21,9 +24,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
+import java.nio.file.Path;
+import java.util.List;
 
-import static io.github.fireres.core.test.TestUtils.repeatTest;
+import static io.github.fireres.core.test.TestUtils.TEST_ATTEMPTS;
+import static java.util.Collections.singletonList;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TestConfig.class)
@@ -32,8 +37,8 @@ import static io.github.fireres.core.test.TestUtils.repeatTest;
 @ComponentScan(basePackages = "io.github.fireres")
 public class ExcelReportConstructorTest {
 
-    @Rule
-    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+    @TempDir
+    public static Path temporaryFolder;
 
     @Autowired
     private ReportConstructor reportConstructor;
@@ -51,29 +56,50 @@ public class ExcelReportConstructorTest {
     private HeatFlowService heatFlowService;
 
     @Autowired
-    private GenerationProperties generationProperties;
+    private Sample sample;
 
-    @Test
+    @Autowired
+    private FireModeProperties fireModeProperties;
+
+    @Autowired
+    private ExcessPressureProperties excessPressureProperties;
+
+    @Autowired
+    private HeatFlowProperties heatFlowProperties;
+
+    @Autowired
+    private List<UnheatedSurfaceProperties> unheatedSurfaceProperties;
+
+    @BeforeEach
+    public void setup() {
+        sample.removeAllReports();
+    }
+
+    @RepeatedTest(TEST_ATTEMPTS / 10)
     public void construct() {
-        repeatTest(() -> {
-            val sample = new Sample(generationProperties.getSamples().get(0));
+        fireModeService.createReport(sample, fireModeProperties);
+        excessPressureService.createReport(sample, excessPressureProperties);
+        heatFlowService.createReport(sample, heatFlowProperties);
+        unheatedSurfaceProperties.forEach(p ->
+                unheatedSurfaceService.createReport(sample, p));
 
-            fireModeService.createReport(sample);
-            excessPressureService.createReport(sample);
-            unheatedSurfaceService.createReport(sample);
-            heatFlowService.createReport(sample);
+        File file = null;
+        try {
+            file = temporaryFolder.resolve("test.xls").toFile();
+            file.createNewFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-            File file = null;
-            try {
-                file = temporaryFolder.newFile("test.xls");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        reportConstructor.construct(singletonList(sample), file);
 
-            reportConstructor.construct(generationProperties.getGeneral(), Collections.singletonList(sample), file);
+        file.delete();
+    }
 
-            file.delete();
-        });
+    //todo: fix
+    @Test
+    public void forRemoval() {
+        //do nothing
     }
 
 }

@@ -1,6 +1,5 @@
 package io.github.fireres.excel;
 
-import io.github.fireres.core.properties.GeneralProperties;
 import io.github.fireres.core.model.Sample;
 import io.github.fireres.excel.sheet.ExcelSheetsBuilder;
 import lombok.RequiredArgsConstructor;
@@ -26,20 +25,20 @@ public class ExcelReportConstructor implements ReportConstructor {
 
     @Override
     @SneakyThrows
-    public void construct(GeneralProperties generalProperties, List<Sample> samples, File outputFile) {
+    public void construct(List<Sample> samples, File outputFile) {
         log.info("Writing excel report to: {}", outputFile.getAbsolutePath());
 
-        try (val excel = generateExcel(generalProperties, samples);
+        try (val excel = generateExcel(samples);
              val outputStream = new FileOutputStream(outputFile)) {
             excel.write(outputStream);
         }
     }
 
-    private Workbook generateExcel(GeneralProperties generalProperties, List<Sample> samples) {
+    private Workbook generateExcel(List<Sample> samples) {
         val workbook = new XSSFWorkbook();
 
         sheetsBuilders.forEach(builder -> {
-            val sheets = builder.build(generalProperties, samples);
+            val sheets = builder.build(samples);
 
             sheets.forEach(sheet -> sheet.create(workbook));
         });
