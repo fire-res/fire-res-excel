@@ -1,18 +1,18 @@
 package io.github.fireres.excel.report;
 
-import io.github.fireres.core.properties.GeneralProperties;
 import io.github.fireres.core.model.Report;
+import io.github.fireres.core.properties.GeneralProperties;
 import io.github.fireres.excel.annotation.ExcessPressure;
 import io.github.fireres.excel.chart.ExcessPressureChart;
-import io.github.fireres.excel.column.excess.pressure.MaxAllowedPressureColumn;
 import io.github.fireres.excel.column.Column;
 import io.github.fireres.excel.column.TimeColumn;
 import io.github.fireres.excel.column.excess.pressure.DeltaColumn;
+import io.github.fireres.excel.column.excess.pressure.MaxAllowedPressureColumn;
 import io.github.fireres.excel.column.excess.pressure.MinAllowedPressureColumn;
 import io.github.fireres.excel.column.excess.pressure.PressureColumn;
 import io.github.fireres.excess.pressure.report.ExcessPressureReport;
+import lombok.RequiredArgsConstructor;
 import lombok.val;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -22,12 +22,15 @@ import java.util.Locale;
 
 @Component
 @ExcessPressure
+@RequiredArgsConstructor
 public class ExcessPressureExcelReportsBuilder implements ExcelReportsBuilder {
 
+    private final GeneralProperties generalProperties;
+
     @Override
-    public List<ExcelReport> build(GeneralProperties generalProperties, List<Report> reports) {
+    public List<ExcelReport> build(List<Report> reports) {
         val time = generalProperties.getTime();
-        val data = createData(generalProperties, reports);
+        val data = createData(reports);
         val chart = new ExcessPressureChart(time, data);
 
         if (basePressuresAreSame(reports)) {
@@ -49,7 +52,7 @@ public class ExcessPressureExcelReportsBuilder implements ExcelReportsBuilder {
                 .allMatch(report -> ((ExcessPressureReport) report).getBasePressure().equals(basePressure));
     }
 
-    private List<Column> createData(GeneralProperties generalProperties, List<Report> reports) {
+    private List<Column> createData(List<Report> reports) {
         val time = generalProperties.getTime();
         val columns = new ArrayList<Column>();
 

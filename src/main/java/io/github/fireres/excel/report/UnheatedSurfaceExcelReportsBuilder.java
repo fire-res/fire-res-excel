@@ -1,8 +1,7 @@
 package io.github.fireres.excel.report;
 
-import io.github.fireres.core.properties.GeneralProperties;
-import io.github.fireres.core.properties.GenerationProperties;
 import io.github.fireres.core.model.Report;
+import io.github.fireres.core.properties.GeneralProperties;
 import io.github.fireres.excel.annotation.UnheatedSurface;
 import io.github.fireres.excel.chart.UnheatedSurfaceChart;
 import io.github.fireres.excel.column.Column;
@@ -11,7 +10,6 @@ import io.github.fireres.excel.column.unheated.surface.UnheatedSurfaceMeanBoundC
 import io.github.fireres.excel.column.unheated.surface.UnheatedSurfaceMeanColumn;
 import io.github.fireres.excel.column.unheated.surface.UnheatedSurfaceThermocoupleBoundColumn;
 import io.github.fireres.excel.column.unheated.surface.UnheatedSurfaceThermocoupleColumn;
-import io.github.fireres.unheated.surface.model.Group;
 import io.github.fireres.unheated.surface.report.UnheatedSurfaceReport;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -19,39 +17,37 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 @UnheatedSurface
 @RequiredArgsConstructor
 public class UnheatedSurfaceExcelReportsBuilder implements ExcelReportsBuilder {
 
-    private final GenerationProperties generationProperties;
+    private final GeneralProperties generalProperties;
 
     @Override
-    public List<ExcelReport> build(GeneralProperties generalProperties, List<Report> reports) {
+    public List<ExcelReport> build(List<Report> reports) {
+        val excelReports = new ArrayList<ExcelReport>();
+        val groupIndex = new AtomicInteger(0);
+        val thermocouplesIndexShift = new AtomicInteger(0);
 
-        return reports.stream()
-                .flatMap(report -> {
-                    val unheatedSurfaceReport = (UnheatedSurfaceReport) report;
+        reports.forEach(report -> {
+            val unheatedSurfaceReport = (UnheatedSurfaceReport) report;
 
-                    return List.of(
-                            createReportForGroup(1, unheatedSurfaceReport.getFirstGroup(), 0),
+            excelReports.add(createReportForGroup(groupIndex.get(), unheatedSurfaceReport, thermocouplesIndexShift.get()));
+            groupIndex.incrementAndGet();
+            thermocouplesIndexShift.addAndGet(unheatedSurfaceReport.getThermocoupleTemperatures().size());
+        });
 
-                            createReportForGroup(2, unheatedSurfaceReport.getSecondGroup(),
-                                    unheatedSurfaceReport.getFirstGroup().getThermocoupleTemperatures().size()),
-
-                            createReportForGroup(3, unheatedSurfaceReport.getThirdGroup(),
-                                    unheatedSurfaceReport.getFirstGroup().getThermocoupleTemperatures().size() +
-                                            unheatedSurfaceReport.getSecondGroup().getThermocoupleTemperatures().size())
-                    ).stream();
-                })
-                .collect(Collectors.toList());
+        return excelReports;
     }
 
-    private ExcelReport createReportForGroup(Integer groupIndex, Group group,
+    private ExcelReport createReportForGroup(Integer groupIndex,
+                                             UnheatedSurfaceReport group,
                                              Integer thermocoupleIndexShift) {
-        val time = generationProperties.getGeneral().getTime();
+
+        val time = generalProperties.getTime();
         val columns = new ArrayList<Column>();
 
         columns.add(new TimeColumn(time));

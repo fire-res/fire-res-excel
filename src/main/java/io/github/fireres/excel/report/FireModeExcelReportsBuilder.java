@@ -1,10 +1,11 @@
 package io.github.fireres.excel.report;
 
-import io.github.fireres.core.properties.GeneralProperties;
 import io.github.fireres.core.model.Report;
+import io.github.fireres.core.properties.GeneralProperties;
 import io.github.fireres.excel.annotation.FireMode;
 import io.github.fireres.excel.chart.FireModeChart;
 import io.github.fireres.excel.column.Column;
+import io.github.fireres.excel.column.TimeColumn;
 import io.github.fireres.excel.column.firemode.EightTimeColumn;
 import io.github.fireres.excel.column.firemode.EnvTempColumn;
 import io.github.fireres.excel.column.firemode.FurnaceTemperatureColumn;
@@ -13,8 +14,8 @@ import io.github.fireres.excel.column.firemode.MinAllowedTemperatureColumn;
 import io.github.fireres.excel.column.firemode.StandardTemperatureColumn;
 import io.github.fireres.excel.column.firemode.ThermocoupleTemperatureColumn;
 import io.github.fireres.excel.column.firemode.ThermocouplesMeanTemperatureColumn;
-import io.github.fireres.excel.column.TimeColumn;
 import io.github.fireres.firemode.report.FireModeReport;
+import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.stereotype.Component;
 
@@ -30,12 +31,15 @@ import static io.github.fireres.firemode.utils.FireModeUtils.getMaintainedThermo
 
 @Component
 @FireMode
+@RequiredArgsConstructor
 public class FireModeExcelReportsBuilder implements ExcelReportsBuilder {
 
+    private final GeneralProperties generalProperties;
+
     @Override
-    public List<ExcelReport> build(GeneralProperties generalProperties, List<Report> reports) {
+    public List<ExcelReport> build(List<Report> reports) {
         val time = generalProperties.getTime();
-        val data = createData(generalProperties, reports);
+        val data = createData(reports);
 
         return List.of(ExcelReport.builder()
                 .data(data)
@@ -43,7 +47,7 @@ public class FireModeExcelReportsBuilder implements ExcelReportsBuilder {
                 .build());
     }
 
-    protected List<Column> createData(GeneralProperties generalProperties, List<Report> reports) {
+    protected List<Column> createData(List<Report> reports) {
         val columns = new ArrayList<Column>();
 
         val time = generalProperties.getTime();

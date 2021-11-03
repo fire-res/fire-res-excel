@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.Collections.singletonList;
-
 @Component
 @HeatFlow
 public class HeatFlowSheetsBuilder implements ExcelSheetsBuilder {
@@ -22,22 +20,27 @@ public class HeatFlowSheetsBuilder implements ExcelSheetsBuilder {
     private static final String SHEET_NAME = "Тепловой поток - %s";
 
     private final ExcelReportsBuilder excelReportsBuilder;
+    private final GeneralProperties generalProperties;
 
     @Autowired
-    public HeatFlowSheetsBuilder(@HeatFlow ExcelReportsBuilder excelReportsBuilder) {
+    public HeatFlowSheetsBuilder(@HeatFlow ExcelReportsBuilder excelReportsBuilder,
+                                 GeneralProperties generalProperties) {
         this.excelReportsBuilder = excelReportsBuilder;
+        this.generalProperties = generalProperties;
     }
 
     @Override
-    public List<ExcelSheet> build(GeneralProperties generalProperties, List<Sample> samples) {
+    public List<ExcelSheet> build(List<Sample> samples) {
         val time = generalProperties.getTime();
 
         return samples.stream()
                 .flatMap(sample -> {
-                    val report = sample.getReportByClass(HeatFlowReport.class);
+                    val reports = sample.getReports().stream()
+                            .filter(report -> report instanceof HeatFlowReport)
+                            .collect(Collectors.toList());
 
-                    if (report.isPresent()) {
-                        val excelReports = excelReportsBuilder.build(generalProperties, singletonList(report.get()));
+                    if (!reports.isEmpty()) {
+                        val excelReports = excelReportsBuilder.build(reports);
                         val sheetName = String.format(SHEET_NAME, sample.getSampleProperties().getName());
 
                         return Stream.of(new ExcelSheet(time, excelReports, sheetName));
