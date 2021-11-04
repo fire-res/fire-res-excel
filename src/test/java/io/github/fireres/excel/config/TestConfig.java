@@ -5,7 +5,6 @@ import io.github.fireres.core.model.Point;
 import io.github.fireres.core.model.Sample;
 import io.github.fireres.core.properties.FunctionForm;
 import io.github.fireres.core.properties.GeneralProperties;
-import io.github.fireres.core.properties.ReportType;
 import io.github.fireres.core.properties.SampleProperties;
 import io.github.fireres.excess.pressure.properties.ExcessPressureProperties;
 import io.github.fireres.firemode.properties.FireModeProperties;
@@ -15,6 +14,11 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
 import java.util.List;
+
+import static io.github.fireres.excess.pressure.report.ExcessPressureReportType.EXCESS_PRESSURE;
+import static io.github.fireres.firemode.report.FireModeReportType.FIRE_MODE;
+import static io.github.fireres.heatflow.report.HeatFlowReportType.HEAT_FLOW;
+import static io.github.fireres.unheated.surface.report.UnheatedSurfaceReportType.UNHEATED_SURFACE;
 
 @TestConfiguration
 public class TestConfig {
@@ -37,7 +41,12 @@ public class TestConfig {
     @Bean
     public GeneralProperties generalProperties() {
         return GeneralProperties.builder()
-                .includedReports(List.of(ReportType.values()))
+                .includedReports(List.of(
+                        FIRE_MODE,
+                        EXCESS_PRESSURE,
+                        HEAT_FLOW,
+                        UNHEATED_SURFACE
+                ))
                 .environmentTemperature(21)
                 .time(71)
                 .build();

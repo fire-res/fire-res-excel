@@ -2,13 +2,13 @@ package io.github.fireres.excel.report;
 
 import io.github.fireres.core.model.Report;
 import io.github.fireres.core.properties.GeneralProperties;
-import io.github.fireres.excel.annotation.HeatFlow;
 import io.github.fireres.excel.chart.HeatFlowChart;
 import io.github.fireres.excel.column.Column;
 import io.github.fireres.excel.column.TimeColumn;
 import io.github.fireres.excel.column.heat.flow.HeatFlowBoundColumn;
 import io.github.fireres.excel.column.heat.flow.HeatFlowMeanTemperatureColumn;
 import io.github.fireres.excel.column.heat.flow.HeatFlowThermocoupleColumn;
+import io.github.fireres.heatflow.annotation.HeatFlow;
 import io.github.fireres.heatflow.report.HeatFlowReport;
 import lombok.RequiredArgsConstructor;
 import lombok.val;

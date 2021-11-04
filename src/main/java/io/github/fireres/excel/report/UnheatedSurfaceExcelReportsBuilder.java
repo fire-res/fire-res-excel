@@ -2,7 +2,6 @@ package io.github.fireres.excel.report;
 
 import io.github.fireres.core.model.Report;
 import io.github.fireres.core.properties.GeneralProperties;
-import io.github.fireres.excel.annotation.UnheatedSurface;
 import io.github.fireres.excel.chart.UnheatedSurfaceChart;
 import io.github.fireres.excel.column.Column;
 import io.github.fireres.excel.column.TimeColumn;
@@ -10,6 +9,7 @@ import io.github.fireres.excel.column.unheated.surface.UnheatedSurfaceMeanBoundC
 import io.github.fireres.excel.column.unheated.surface.UnheatedSurfaceMeanColumn;
 import io.github.fireres.excel.column.unheated.surface.UnheatedSurfaceThermocoupleBoundColumn;
 import io.github.fireres.excel.column.unheated.surface.UnheatedSurfaceThermocoupleColumn;
+import io.github.fireres.unheated.surface.annotation.UnheatedSurface;
 import io.github.fireres.unheated.surface.report.UnheatedSurfaceReport;
 import lombok.RequiredArgsConstructor;
 import lombok.val;

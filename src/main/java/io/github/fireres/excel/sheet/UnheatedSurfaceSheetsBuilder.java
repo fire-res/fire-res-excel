@@ -2,8 +2,8 @@ package io.github.fireres.excel.sheet;
 
 import io.github.fireres.core.properties.GeneralProperties;
 import io.github.fireres.core.model.Sample;
-import io.github.fireres.excel.annotation.UnheatedSurface;
 import io.github.fireres.excel.report.ExcelReportsBuilder;
+import io.github.fireres.unheated.surface.annotation.UnheatedSurface;
 import io.github.fireres.unheated.surface.report.UnheatedSurfaceReport;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;

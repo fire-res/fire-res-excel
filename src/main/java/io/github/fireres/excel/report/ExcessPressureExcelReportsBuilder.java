@@ -2,7 +2,6 @@ package io.github.fireres.excel.report;
 
 import io.github.fireres.core.model.Report;
 import io.github.fireres.core.properties.GeneralProperties;
-import io.github.fireres.excel.annotation.ExcessPressure;
 import io.github.fireres.excel.chart.ExcessPressureChart;
 import io.github.fireres.excel.column.Column;
 import io.github.fireres.excel.column.TimeColumn;
@@ -10,6 +9,7 @@ import io.github.fireres.excel.column.excess.pressure.DeltaColumn;
 import io.github.fireres.excel.column.excess.pressure.MaxAllowedPressureColumn;
 import io.github.fireres.excel.column.excess.pressure.MinAllowedPressureColumn;
 import io.github.fireres.excel.column.excess.pressure.PressureColumn;
+import io.github.fireres.excess.pressure.annotation.ExcessPressure;
 import io.github.fireres.excess.pressure.report.ExcessPressureReport;
 import lombok.RequiredArgsConstructor;
 import lombok.val;

@@ -5,7 +5,7 @@ import io.github.fireres.core.model.DoublePointSequence;
 import io.github.fireres.excel.chart.ChartColumn;
 import io.github.fireres.excel.column.PointSequenceColumn;
 import io.github.fireres.excel.style.chart.DefaultDataLineProperties;
-import io.github.fireres.excess.pressure.model.Pressure;
+import io.github.fireres.excess.pressure.model.ExcessPressure;
 import org.apache.poi.xddf.usermodel.XDDFLineProperties;
 
 import java.util.stream.Collectors;
@@ -17,7 +17,7 @@ public class DeltaColumn extends PointSequenceColumn implements ChartColumn {
 
     private final Object sampleName;
 
-    public DeltaColumn(String sampleName, Pressure pressure) {
+    public DeltaColumn(String sampleName, ExcessPressure pressure) {
         super(String.format(HEADER, sampleName), true,
                 new DoublePointSequence(pressure.getValue().stream()
                         .map(p -> new DoublePoint(p.getTime(), p.getNormalizedValue()))
