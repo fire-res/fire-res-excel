@@ -2,8 +2,8 @@ package io.github.fireres.excel.sheet;
 
 import io.github.fireres.core.properties.GeneralProperties;
 import io.github.fireres.core.model.Sample;
-import io.github.fireres.excel.annotation.HeatFlow;
 import io.github.fireres.excel.report.ExcelReportsBuilder;
+import io.github.fireres.heatflow.annotation.HeatFlow;
 import io.github.fireres.heatflow.report.HeatFlowReport;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;

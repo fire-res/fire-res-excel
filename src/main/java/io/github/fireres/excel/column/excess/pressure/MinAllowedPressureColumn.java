@@ -3,7 +3,7 @@ package io.github.fireres.excel.column.excess.pressure;
 import io.github.fireres.excel.chart.ChartColumn;
 import io.github.fireres.excel.column.PointSequenceColumn;
 import io.github.fireres.excel.style.chart.DefaultDataLineProperties;
-import io.github.fireres.excess.pressure.model.MinAllowedPressure;
+import io.github.fireres.excess.pressure.model.ExcessPressureMinAllowedPressure;
 import org.apache.poi.xddf.usermodel.XDDFLineProperties;
 
 public class MinAllowedPressureColumn extends PointSequenceColumn implements ChartColumn {
@@ -13,7 +13,7 @@ public class MinAllowedPressureColumn extends PointSequenceColumn implements Cha
 
     private final String sampleName;
 
-    public MinAllowedPressureColumn(String sampleName, MinAllowedPressure minAllowedPressure) {
+    public MinAllowedPressureColumn(String sampleName, ExcessPressureMinAllowedPressure minAllowedPressure) {
         super(String.format(HEADER, sampleName), false, minAllowedPressure);
         this.sampleName = sampleName;
     }

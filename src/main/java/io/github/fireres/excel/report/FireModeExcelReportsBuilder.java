@@ -2,7 +2,6 @@ package io.github.fireres.excel.report;
 
 import io.github.fireres.core.model.Report;
 import io.github.fireres.core.properties.GeneralProperties;
-import io.github.fireres.excel.annotation.FireMode;
 import io.github.fireres.excel.chart.FireModeChart;
 import io.github.fireres.excel.column.Column;
 import io.github.fireres.excel.column.TimeColumn;
@@ -14,6 +13,7 @@ import io.github.fireres.excel.column.firemode.MinAllowedTemperatureColumn;
 import io.github.fireres.excel.column.firemode.StandardTemperatureColumn;
 import io.github.fireres.excel.column.firemode.ThermocoupleTemperatureColumn;
 import io.github.fireres.excel.column.firemode.ThermocouplesMeanTemperatureColumn;
+import io.github.fireres.firemode.annotation.FireMode;
 import io.github.fireres.firemode.report.FireModeReport;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
