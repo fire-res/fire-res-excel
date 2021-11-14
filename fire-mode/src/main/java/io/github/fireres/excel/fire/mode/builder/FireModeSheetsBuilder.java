@@ -1,5 +1,6 @@
 package io.github.fireres.excel.fire.mode.builder;
 
+import io.github.fireres.core.model.ReportType;
 import io.github.fireres.core.model.Sample;
 import io.github.fireres.core.properties.GeneralProperties;
 import io.github.fireres.excel.core.builder.ExcelReportsBuilder;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static io.github.fireres.firemode.report.FireModeReportType.FIRE_MODE;
 
 @Component
 @FireMode
@@ -47,5 +50,10 @@ public class FireModeSheetsBuilder implements ExcelSheetsBuilder {
         } else {
             return Collections.emptyList();
         }
+    }
+
+    @Override
+    public ReportType supportedReportType() {
+        return FIRE_MODE;
     }
 }

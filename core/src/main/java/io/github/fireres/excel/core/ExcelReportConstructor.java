@@ -1,6 +1,7 @@
 package io.github.fireres.excel.core;
 
 import io.github.fireres.core.model.Sample;
+import io.github.fireres.core.properties.GeneralProperties;
 import io.github.fireres.excel.core.builder.ExcelSheetsBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -22,6 +23,7 @@ public class ExcelReportConstructor implements ReportConstructor {
     public static final String TIMES_NEW_ROMAN = "Times New Roman";
 
     private final List<ExcelSheetsBuilder> sheetsBuilders;
+    private final GeneralProperties generalProperties;
 
     @Override
     @SneakyThrows
@@ -38,9 +40,11 @@ public class ExcelReportConstructor implements ReportConstructor {
         val workbook = new XSSFWorkbook();
 
         sheetsBuilders.forEach(builder -> {
-            val sheets = builder.build(samples);
+            if (generalProperties.getIncludedReports().contains(builder.supportedReportType())) {
+                val sheets = builder.build(samples);
 
-            sheets.forEach(sheet -> sheet.create(workbook));
+                sheets.forEach(sheet -> sheet.create(workbook));
+            }
         });
 
         return workbook;
