@@ -1,5 +1,6 @@
 package io.github.fireres.excel.excess.pressure.builder;
 
+import io.github.fireres.core.model.ReportType;
 import io.github.fireres.core.model.Sample;
 import io.github.fireres.core.properties.GeneralProperties;
 import io.github.fireres.excel.core.builder.ExcelReportsBuilder;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static io.github.fireres.excess.pressure.report.ExcessPressureReportType.EXCESS_PRESSURE;
 
 @Component
 @ExcessPressure
@@ -47,5 +50,10 @@ public class ExcessPressureSheetsBuilder implements ExcelSheetsBuilder {
         } else {
             return Collections.emptyList();
         }
+    }
+
+    @Override
+    public ReportType supportedReportType() {
+        return EXCESS_PRESSURE;
     }
 }

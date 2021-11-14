@@ -1,5 +1,6 @@
 package io.github.fireres.excel.heat.flow.builder;
 
+import io.github.fireres.core.model.ReportType;
 import io.github.fireres.core.model.Sample;
 import io.github.fireres.core.properties.GeneralProperties;
 import io.github.fireres.excel.core.builder.ExcelReportsBuilder;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static io.github.fireres.heatflow.report.HeatFlowReportType.HEAT_FLOW;
 
 @Component
 @HeatFlow
@@ -51,5 +54,10 @@ public class HeatFlowSheetsBuilder implements ExcelSheetsBuilder {
                     }
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ReportType supportedReportType() {
+        return HEAT_FLOW;
     }
 }
