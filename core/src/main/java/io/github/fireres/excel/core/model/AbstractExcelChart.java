@@ -8,27 +8,24 @@ import org.apache.commons.math3.util.Pair;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xddf.usermodel.chart.AxisCrosses;
 import org.apache.poi.xddf.usermodel.chart.AxisPosition;
+import org.apache.poi.xddf.usermodel.chart.AxisTickMark;
 import org.apache.poi.xddf.usermodel.chart.ChartTypes;
 import org.apache.poi.xddf.usermodel.chart.LegendPosition;
 import org.apache.poi.xddf.usermodel.chart.MarkerStyle;
 import org.apache.poi.xddf.usermodel.chart.XDDFCategoryAxis;
 import org.apache.poi.xddf.usermodel.chart.XDDFChartData;
-import org.apache.poi.xddf.usermodel.chart.XDDFLineChartData;
 import org.apache.poi.xddf.usermodel.chart.XDDFNumericalDataSource;
+import org.apache.poi.xddf.usermodel.chart.XDDFScatterChartData;
 import org.apache.poi.xddf.usermodel.chart.XDDFValueAxis;
-import org.apache.poi.xddf.usermodel.text.TextAlignment;
 import org.apache.poi.xssf.usermodel.XSSFChart;
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFDrawing;
-import org.apache.poi.xssf.usermodel.XSSFFont;
-import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static io.github.fireres.excel.core.ExcelReportConstructor.TIMES_NEW_ROMAN;
 import static org.apache.poi.xddf.usermodel.chart.XDDFDataSourcesFactory.fromNumericCellRange;
 
 @RequiredArgsConstructor
@@ -43,8 +40,6 @@ public abstract class AbstractExcelChart implements ExcelChart {
         val drawing = sheet.createDrawingPatriarch();
         val anchor = createAnchor(drawing, position);
 
-        setBackground(drawing, anchor);
-
         val chart = drawing.createChart(anchor);
         createLegend(chart);
 
@@ -54,25 +49,10 @@ public abstract class AbstractExcelChart implements ExcelChart {
         chart.plot(data);
     }
 
-    private void setBackground(XSSFDrawing drawing, XSSFClientAnchor anchor) {
-        val shape = drawing.createSimpleShape(anchor);
-
-        val font = new XSSFFont();
-        font.setFontName(TIMES_NEW_ROMAN);
-        font.setFontHeight(18);
-
-        val text = new XSSFRichTextString();
-        text.append(getTitle(), font);
-
-        shape.setFillColor(255, 255, 255);
-        shape.setText(text);
-        shape.getTextBody().getParagraphs().forEach(p -> p.setTextAlignment(TextAlignment.CENTER));
-    }
-
     protected abstract String getTitle();
 
     private XDDFChartData createData(XSSFChart chart) {
-        return chart.createData(ChartTypes.LINE, createCategoryAxis(chart), createValueAxis(chart));
+        return chart.createData(ChartTypes.SCATTER, createCategoryAxis(chart), createValueAxis(chart));
     }
 
     private XDDFValueAxis createValueAxis(XSSFChart chart) {
@@ -80,6 +60,8 @@ public abstract class AbstractExcelChart implements ExcelChart {
         valueAxis.setCrosses(AxisCrosses.AUTO_ZERO);
         valueAxis.setTitle(getValueAxisTitle());
         valueAxis.setVisible(true);
+        valueAxis.setMajorTickMark(AxisTickMark.OUT);
+        valueAxis.setMinorTickMark(AxisTickMark.NONE);
 
         val shape = valueAxis.getOrAddShapeProperties();
         shape.setLineProperties(new AxisLineProperties());
@@ -94,6 +76,8 @@ public abstract class AbstractExcelChart implements ExcelChart {
         val categoryAxis = chart.createCategoryAxis(AxisPosition.BOTTOM);
         categoryAxis.setTitle("Время, мин.");
         categoryAxis.setVisible(true);
+        categoryAxis.setMajorTickMark(AxisTickMark.OUT);
+        categoryAxis.setMinorTickMark(AxisTickMark.NONE);
 
         val shape = categoryAxis.getOrAddShapeProperties();
         shape.setLineProperties(new AxisLineProperties());
@@ -122,7 +106,7 @@ public abstract class AbstractExcelChart implements ExcelChart {
 
         for (val column : collectChartColumns(columns)) {
             val dataSource = dataSource(sheet, column.getFirst(), position);
-            val series = (XDDFLineChartData.Series) data.addSeries(timeSource, dataSource);
+            val series = (XDDFScatterChartData.Series) data.addSeries(timeSource, dataSource);
 
             series.setMarkerStyle(MarkerStyle.NONE);
             series.setSmooth(isSmoothed());

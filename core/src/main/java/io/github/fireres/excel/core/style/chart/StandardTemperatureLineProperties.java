@@ -16,7 +16,7 @@ public class StandardTemperatureLineProperties extends XDDFLineProperties {
 
         fillProperties.setColor(color);
 
-        setWidth(1.0);
+        setWidth(1.25);
         setFillProperties(fillProperties);
         setPresetDash(new XDDFPresetLineDash(PresetLineDash.DASH_DOT));
     }

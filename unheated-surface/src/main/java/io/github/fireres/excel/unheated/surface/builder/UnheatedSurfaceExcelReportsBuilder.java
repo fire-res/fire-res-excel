@@ -1,6 +1,7 @@
 package io.github.fireres.excel.unheated.surface.builder;
 
 import io.github.fireres.core.model.Report;
+import io.github.fireres.core.model.ReportType;
 import io.github.fireres.core.properties.GeneralProperties;
 import io.github.fireres.excel.core.builder.ExcelReportsBuilder;
 import io.github.fireres.excel.core.model.Column;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static io.github.fireres.unheated.surface.report.UnheatedSurfaceReportType.UNHEATED_SURFACE;
 
 @Component
 @UnheatedSurface
@@ -72,4 +75,10 @@ public class UnheatedSurfaceExcelReportsBuilder implements ExcelReportsBuilder {
                 .chart(new UnheatedSurfaceChart(time, columns, groupIndex))
                 .build();
     }
+
+    @Override
+    public ReportType supportedReportType() {
+        return UNHEATED_SURFACE;
+    }
+
 }

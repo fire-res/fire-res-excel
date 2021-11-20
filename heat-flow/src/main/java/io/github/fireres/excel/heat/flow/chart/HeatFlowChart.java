@@ -7,8 +7,8 @@ import java.util.List;
 
 public class HeatFlowChart extends AbstractExcelChart {
 
-    private static final Integer HEIGHT = 50;
-    private static final Integer WIDTH = 25;
+    private static final Integer HEIGHT = 25;
+    private static final Integer WIDTH = 13;
 
     public HeatFlowChart(Integer time, List<Column> columns) {
         super(time, columns, HEIGHT, WIDTH);

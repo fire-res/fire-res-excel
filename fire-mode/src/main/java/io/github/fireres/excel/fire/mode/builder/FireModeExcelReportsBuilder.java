@@ -1,6 +1,7 @@
 package io.github.fireres.excel.fire.mode.builder;
 
 import io.github.fireres.core.model.Report;
+import io.github.fireres.core.model.ReportType;
 import io.github.fireres.core.properties.GeneralProperties;
 import io.github.fireres.excel.core.builder.ExcelReportsBuilder;
 import io.github.fireres.excel.core.model.Column;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+import static io.github.fireres.firemode.report.FireModeReportType.FIRE_MODE;
 import static io.github.fireres.firemode.utils.FireModeUtils.getMaintainedFurnaceTemperature;
 import static io.github.fireres.firemode.utils.FireModeUtils.getMaintainedMaxAllowedTemperature;
 import static io.github.fireres.firemode.utils.FireModeUtils.getMaintainedMinAllowedTemperature;
@@ -84,6 +86,11 @@ public class FireModeExcelReportsBuilder implements ExcelReportsBuilder {
         }
 
         return columns;
+    }
+
+    @Override
+    public ReportType supportedReportType() {
+        return FIRE_MODE;
     }
 
 }
