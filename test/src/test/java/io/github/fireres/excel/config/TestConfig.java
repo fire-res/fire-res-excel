@@ -6,6 +6,8 @@ import io.github.fireres.core.model.Sample;
 import io.github.fireres.core.properties.FunctionForm;
 import io.github.fireres.core.properties.GeneralProperties;
 import io.github.fireres.core.properties.SampleProperties;
+import io.github.fireres.excel.core.builder.ExcelSheetsBuilder;
+import io.github.fireres.excel.core.config.AbstractExcelConfig;
 import io.github.fireres.excess.pressure.properties.ExcessPressureProperties;
 import io.github.fireres.firemode.properties.FireModeProperties;
 import io.github.fireres.heatflow.properties.HeatFlowProperties;
@@ -21,7 +23,7 @@ import static io.github.fireres.heatflow.report.HeatFlowReportType.HEAT_FLOW;
 import static io.github.fireres.unheated.surface.report.UnheatedSurfaceReportType.UNHEATED_SURFACE;
 
 @TestConfiguration
-public class TestConfig {
+public class TestConfig extends AbstractExcelConfig {
 
     public static final List<Point<Integer>> FIREMODE_INTERPOLATION_POINTS = List.of(
             new IntegerPoint(0, 21),
@@ -117,4 +119,8 @@ public class TestConfig {
         return new Sample(sampleProperties);
     }
 
+    @Override
+    protected int getOrder(Class<? extends ExcelSheetsBuilder> builderClass) {
+        return 0;
+    }
 }

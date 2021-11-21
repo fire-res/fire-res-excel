@@ -12,7 +12,7 @@ public class AxisLineProperties extends XDDFLineProperties {
         val fillProperties = new XDDFSolidFillProperties();
         fillProperties.setColor(new XDDFColorPreset(PresetColor.BLACK));
 
-        setWidth(1.0);
+        setWidth(1.25);
         setFillProperties(fillProperties);
     }
 

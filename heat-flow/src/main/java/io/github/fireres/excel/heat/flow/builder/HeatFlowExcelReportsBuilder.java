@@ -1,6 +1,7 @@
 package io.github.fireres.excel.heat.flow.builder;
 
 import io.github.fireres.core.model.Report;
+import io.github.fireres.core.model.ReportType;
 import io.github.fireres.core.properties.GeneralProperties;
 import io.github.fireres.excel.core.builder.ExcelReportsBuilder;
 import io.github.fireres.excel.core.model.Column;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static io.github.fireres.heatflow.report.HeatFlowReportType.HEAT_FLOW;
 
 @Component
 @HeatFlow
@@ -60,4 +63,10 @@ public class HeatFlowExcelReportsBuilder implements ExcelReportsBuilder {
 
         return columns;
     }
+
+    @Override
+    public ReportType supportedReportType() {
+        return HEAT_FLOW;
+    }
+
 }

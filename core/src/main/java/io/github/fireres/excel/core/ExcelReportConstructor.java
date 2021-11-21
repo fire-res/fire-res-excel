@@ -9,13 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 
-@Component
 @Slf4j
 @RequiredArgsConstructor
 public class ExcelReportConstructor implements ReportConstructor {
