@@ -26,7 +26,7 @@ import static io.github.fireres.unheated.surface.report.UnheatedSurfaceReportTyp
 public class TestConfig extends AbstractExcelConfig {
 
     public static final List<Point<Integer>> FIREMODE_INTERPOLATION_POINTS = List.of(
-            new IntegerPoint(0, 21),
+            new IntegerPoint(0, 40),
             new IntegerPoint(1, 306),
             new IntegerPoint(18, 749),
             new IntegerPoint(21, 789),
