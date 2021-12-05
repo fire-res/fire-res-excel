@@ -12,7 +12,6 @@ import org.apache.poi.xddf.usermodel.chart.AxisTickMark;
 import org.apache.poi.xddf.usermodel.chart.ChartTypes;
 import org.apache.poi.xddf.usermodel.chart.LegendPosition;
 import org.apache.poi.xddf.usermodel.chart.MarkerStyle;
-import org.apache.poi.xddf.usermodel.chart.XDDFCategoryAxis;
 import org.apache.poi.xddf.usermodel.chart.XDDFChartData;
 import org.apache.poi.xddf.usermodel.chart.XDDFNumericalDataSource;
 import org.apache.poi.xddf.usermodel.chart.XDDFScatterChartData;
@@ -47,8 +46,6 @@ public abstract class AbstractExcelChart implements ExcelChart {
         val data = createData(chart);
         addDataSeries(sheet, data, position);
 
-        removeMinorGridLines(chart);
-
         chart.plot(data);
     }
 
@@ -56,25 +53,10 @@ public abstract class AbstractExcelChart implements ExcelChart {
         chart.getCTChartSpace().addNewSpPr().addNewLn().addNewNoFill();
     }
 
-    private void removeMinorGridLines(XSSFChart chart) {
-        val categoryAxis = chart.getCTChart().getPlotArea().getCatAxArray()[0];
-        if (categoryAxis.isSetMinorGridlines()) {
-            categoryAxis.unsetMinorGridlines();
-            categoryAxis.unsetMinorTickMark();
-        }
-
-        val valueAxis = chart.getCTChart().getPlotArea().getValAxArray()[0];
-        if (valueAxis.isSetMinorGridlines()) {
-            valueAxis.unsetMinorGridlines();
-            valueAxis.unsetMinorTickMark();
-            valueAxis.unsetMinorUnit();
-        }
-    }
-
     protected abstract String getTitle();
 
     private XDDFChartData createData(XSSFChart chart) {
-        return chart.createData(ChartTypes.SCATTER, createCategoryAxis(chart), createValueAxis(chart));
+        return chart.createData(ChartTypes.SCATTER, createTimeAxis(chart), createValueAxis(chart));
     }
 
     private XDDFValueAxis createValueAxis(XSSFChart chart) {
@@ -84,6 +66,7 @@ public abstract class AbstractExcelChart implements ExcelChart {
         valueAxis.setVisible(true);
         valueAxis.setMajorTickMark(AxisTickMark.OUT);
         valueAxis.setMinorTickMark(AxisTickMark.NONE);
+        valueAxis.setMajorUnit(200);
 
         val shape = valueAxis.getOrAddShapeProperties();
         shape.setLineProperties(new AxisLineProperties());
@@ -94,12 +77,13 @@ public abstract class AbstractExcelChart implements ExcelChart {
         return valueAxis;
     }
 
-    private XDDFCategoryAxis createCategoryAxis(XSSFChart chart) {
-        val categoryAxis = chart.createCategoryAxis(AxisPosition.BOTTOM);
+    private XDDFValueAxis createTimeAxis(XSSFChart chart) {
+        val categoryAxis = chart.createValueAxis(AxisPosition.BOTTOM);
         categoryAxis.setTitle("Время, мин.");
         categoryAxis.setVisible(true);
         categoryAxis.setMajorTickMark(AxisTickMark.OUT);
         categoryAxis.setMinorTickMark(AxisTickMark.NONE);
+        categoryAxis.setMajorUnit(10);
 
         val shape = categoryAxis.getOrAddShapeProperties();
         shape.setLineProperties(new AxisLineProperties());
