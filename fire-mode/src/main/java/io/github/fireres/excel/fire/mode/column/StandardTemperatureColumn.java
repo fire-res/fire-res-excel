@@ -2,7 +2,7 @@ package io.github.fireres.excel.fire.mode.column;
 
 import io.github.fireres.excel.core.model.ChartColumn;
 import io.github.fireres.excel.core.model.PointSequenceColumn;
-import io.github.fireres.excel.core.style.chart.StandardTemperatureLineProperties;
+import io.github.fireres.excel.fire.mode.style.StandardTemperatureLineProperties;
 import io.github.fireres.firemode.model.StandardTemperature;
 import org.apache.poi.xddf.usermodel.XDDFLineProperties;
 

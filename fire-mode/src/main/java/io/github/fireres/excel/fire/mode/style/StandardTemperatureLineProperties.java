@@ -1,4 +1,4 @@
-package io.github.fireres.excel.core.style.chart;
+package io.github.fireres.excel.fire.mode.style;
 
 import lombok.val;
 import org.apache.poi.xddf.usermodel.PresetColor;
@@ -16,7 +16,7 @@ public class StandardTemperatureLineProperties extends XDDFLineProperties {
 
         fillProperties.setColor(color);
 
-        setWidth(1.25);
+        setWidth(1.0);
         setFillProperties(fillProperties);
         setPresetDash(new XDDFPresetLineDash(PresetLineDash.DASH_DOT));
     }

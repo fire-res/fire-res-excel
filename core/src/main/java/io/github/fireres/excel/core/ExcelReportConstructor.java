@@ -8,7 +8,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,8 +16,6 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class ExcelReportConstructor implements ReportConstructor {
-
-    public static final String TIMES_NEW_ROMAN = "Times New Roman";
 
     private final List<ExcelSheetsBuilder> sheetsBuilders;
     private final GeneralProperties generalProperties;
@@ -35,7 +32,7 @@ public class ExcelReportConstructor implements ReportConstructor {
     }
 
     private Workbook generateExcel(List<Sample> samples) {
-        val workbook = new XSSFWorkbook();
+        val workbook = new io.github.fireres.excel.core.model.Workbook();
 
         sheetsBuilders.forEach(builder -> {
             if (generalProperties.getIncludedReports().contains(builder.supportedReportType())) {

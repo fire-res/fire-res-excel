@@ -3,6 +3,7 @@ package io.github.fireres.excel.fire.mode.column;
 import io.github.fireres.excel.core.model.ChartColumn;
 import io.github.fireres.excel.core.model.PointSequenceColumn;
 import io.github.fireres.excel.core.style.chart.DefaultDataLineProperties;
+import io.github.fireres.excel.core.style.chart.ThinDataLineProperties;
 import io.github.fireres.firemode.model.ThermocoupleMeanTemperature;
 import org.apache.poi.xddf.usermodel.XDDFLineProperties;
 
@@ -25,6 +26,6 @@ public class ThermocouplesMeanTemperatureColumn extends PointSequenceColumn impl
 
     @Override
     public XDDFLineProperties getLineProperties() {
-        return new DefaultDataLineProperties();
+        return new ThinDataLineProperties();
     }
 }
