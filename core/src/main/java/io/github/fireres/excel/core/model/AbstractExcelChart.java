@@ -42,11 +42,33 @@ public abstract class AbstractExcelChart implements ExcelChart {
 
         val chart = drawing.createChart(anchor);
         createLegend(chart);
+        removeChartBorder(chart);
 
         val data = createData(chart);
         addDataSeries(sheet, data, position);
 
+        removeMinorGridLines(chart);
+
         chart.plot(data);
+    }
+
+    private void removeChartBorder(XSSFChart chart) {
+        chart.getCTChartSpace().addNewSpPr().addNewLn().addNewNoFill();
+    }
+
+    private void removeMinorGridLines(XSSFChart chart) {
+        val categoryAxis = chart.getCTChart().getPlotArea().getCatAxArray()[0];
+        if (categoryAxis.isSetMinorGridlines()) {
+            categoryAxis.unsetMinorGridlines();
+            categoryAxis.unsetMinorTickMark();
+        }
+
+        val valueAxis = chart.getCTChart().getPlotArea().getValAxArray()[0];
+        if (valueAxis.isSetMinorGridlines()) {
+            valueAxis.unsetMinorGridlines();
+            valueAxis.unsetMinorTickMark();
+            valueAxis.unsetMinorUnit();
+        }
     }
 
     protected abstract String getTitle();
