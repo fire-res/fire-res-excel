@@ -20,6 +20,11 @@ public class FireModeChart extends AbstractExcelChart {
     }
 
     @Override
+    protected double getValueAxisMajorUnit() {
+        return 200;
+    }
+
+    @Override
     protected String getValueAxisTitle() {
         return "Температура, оС";
     }

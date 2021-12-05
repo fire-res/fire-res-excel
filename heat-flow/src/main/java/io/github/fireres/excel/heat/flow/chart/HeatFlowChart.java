@@ -20,6 +20,11 @@ public class HeatFlowChart extends AbstractExcelChart {
     }
 
     @Override
+    protected double getValueAxisMajorUnit() {
+        return 0.5;
+    }
+
+    @Override
     protected String getValueAxisTitle() {
         return "Тепловой поток, КВт/м^2";
     }

@@ -23,6 +23,11 @@ public class UnheatedSurfaceChart extends AbstractExcelChart {
     }
 
     @Override
+    protected double getValueAxisMajorUnit() {
+        return 100;
+    }
+
+    @Override
     protected String getValueAxisTitle() {
         return "Температура, оС";
     }

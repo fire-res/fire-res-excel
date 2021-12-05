@@ -23,6 +23,11 @@ public class ExcessPressureChart extends AbstractExcelChart {
     }
 
     @Override
+    protected double getValueAxisMajorUnit() {
+        return 0.5;
+    }
+
+    @Override
     public String getValueAxisTitle() {
         return valueAxisTitle;
     }

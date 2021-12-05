@@ -66,7 +66,7 @@ public abstract class AbstractExcelChart implements ExcelChart {
         valueAxis.setVisible(true);
         valueAxis.setMajorTickMark(AxisTickMark.OUT);
         valueAxis.setMinorTickMark(AxisTickMark.NONE);
-        valueAxis.setMajorUnit(200);
+        valueAxis.setMajorUnit(getValueAxisMajorUnit());
 
         val shape = valueAxis.getOrAddShapeProperties();
         shape.setLineProperties(new AxisLineProperties());
@@ -76,6 +76,8 @@ public abstract class AbstractExcelChart implements ExcelChart {
 
         return valueAxis;
     }
+
+    protected abstract double getValueAxisMajorUnit();
 
     private XDDFValueAxis createTimeAxis(XSSFChart chart) {
         val categoryAxis = chart.createValueAxis(AxisPosition.BOTTOM);
