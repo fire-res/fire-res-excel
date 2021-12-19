@@ -13,9 +13,11 @@ import io.github.fireres.excel.fire.mode.column.EnvTempColumn;
 import io.github.fireres.excel.fire.mode.column.MaxAllowedTemperatureColumn;
 import io.github.fireres.excel.fire.mode.column.MinAllowedTemperatureColumn;
 import io.github.fireres.excel.fire.mode.column.StandardTemperatureColumn;
+import io.github.fireres.excel.fire.mode.column.ThermocoupleTemperatureChartColumn;
 import io.github.fireres.excel.fire.mode.column.ThermocoupleTemperatureColumn;
 import io.github.fireres.excel.fire.mode.column.ThermocouplesMeanTemperatureColumn;
 import io.github.fireres.firemode.annotation.FireMode;
+import io.github.fireres.firemode.model.ThermocoupleTemperature;
 import io.github.fireres.firemode.report.FireModeReport;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -71,17 +73,29 @@ public class FireModeExcelReportsBuilder implements ExcelReportsBuilder {
 
             val thermocoupleTemperatures = getMaintainedThermocoupleTemperatures(fireModeReport);
 
-            for (int t = 0; t < thermocoupleTemperatures.size(); t++) {
-                val thermocoupleTemperature = thermocoupleTemperatures.get(t);
-                columns.add(new ThermocoupleTemperatureColumn(sampleName, t + 1, thermocoupleTemperature));
-            }
-
             if (fireModeReport.getProperties().getShowMeanTemperature()) {
                 columns.add(new ThermocouplesMeanTemperatureColumn(sampleName, getMaintainedThermocoupleMeanTemperature(fireModeReport)));
+                addNonChartThermocoupleTemperatures(columns, sampleName, thermocoupleTemperatures);
+            } else {
+                addChartThermocoupleTemperatures(columns, sampleName, thermocoupleTemperatures);
             }
         }
 
         return columns;
+    }
+
+    private void addNonChartThermocoupleTemperatures(ArrayList<Column> columns, String sampleName, List<ThermocoupleTemperature> thermocoupleTemperatures) {
+        for (int t = 0; t < thermocoupleTemperatures.size(); t++) {
+            val thermocoupleTemperature = thermocoupleTemperatures.get(t);
+            columns.add(new ThermocoupleTemperatureColumn(sampleName, t, thermocoupleTemperature));
+        }
+    }
+
+    private void addChartThermocoupleTemperatures(ArrayList<Column> columns, String sampleName, List<ThermocoupleTemperature> thermocoupleTemperatures) {
+        for (int t = 0; t < thermocoupleTemperatures.size(); t++) {
+            val thermocoupleTemperature = thermocoupleTemperatures.get(t);
+            columns.add(new ThermocoupleTemperatureChartColumn(sampleName, t, thermocoupleTemperature));
+        }
     }
 
     @Override
