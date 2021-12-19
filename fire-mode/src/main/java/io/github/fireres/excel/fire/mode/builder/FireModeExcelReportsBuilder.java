@@ -10,7 +10,6 @@ import io.github.fireres.excel.core.model.TimeColumn;
 import io.github.fireres.excel.fire.mode.chart.FireModeChart;
 import io.github.fireres.excel.fire.mode.column.EightTimeColumn;
 import io.github.fireres.excel.fire.mode.column.EnvTempColumn;
-import io.github.fireres.excel.fire.mode.column.FurnaceTemperatureColumn;
 import io.github.fireres.excel.fire.mode.column.MaxAllowedTemperatureColumn;
 import io.github.fireres.excel.fire.mode.column.MinAllowedTemperatureColumn;
 import io.github.fireres.excel.fire.mode.column.StandardTemperatureColumn;
@@ -26,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static io.github.fireres.firemode.report.FireModeReportType.FIRE_MODE;
-import static io.github.fireres.firemode.utils.FireModeUtils.getMaintainedFurnaceTemperature;
 import static io.github.fireres.firemode.utils.FireModeUtils.getMaintainedMaxAllowedTemperature;
 import static io.github.fireres.firemode.utils.FireModeUtils.getMaintainedMinAllowedTemperature;
 import static io.github.fireres.firemode.utils.FireModeUtils.getMaintainedStandardTemperature;
@@ -64,8 +62,6 @@ public class FireModeExcelReportsBuilder implements ExcelReportsBuilder {
         for (Report report : reports) {
             val fireModeReport = (FireModeReport) report;
             val sampleName = report.getSample().getSampleProperties().getName();
-
-            columns.add(new FurnaceTemperatureColumn(sampleName, getMaintainedFurnaceTemperature(fireModeReport)));
 
             if (fireModeReport.getProperties().getShowBounds()) {
                 columns.add(new MinAllowedTemperatureColumn(sampleName, getMaintainedMinAllowedTemperature(fireModeReport)));
